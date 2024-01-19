@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+ <html xmlns:th="https://www.thymeleaf.org">
+     <head>
+		 <div th:replace="~{fragment :: meta}"></div>    
+              
+		 <div th:replace="~{fragment :: styles}"></div>
+         
+         <title>店舗一覧</title>       
+     </head>
+     <body>
+         <div class="nagoyameshi-wrapper">
+             <!-- ヘッダー -->
+			 <div th:replace="~{fragment :: header}"></div>         
+             <main>
+				 <div class="nagoyameshi-div">
+					 <img class="nagoyameshi-img" th:src="@{/images/StoreInformation2.jpg}" alt="NAGOYAMESHI">
+	                 <div class="d-flex justify-content-between align-items-end flex-wrap nagoyameshi-search">
+	                     <form method="get" th:action="@{/storeInformation}" class="mb-3">
+	                         <div class="input-group">
+	                             <input type="text" class="nagoyameshi-input" name="keyword" th:value="${keyword}" placeholder="店舗名">
+	                             <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button> 
+	                         </div>               
+	                     </form>      
+	                 </div> 
+	                 <div class="nagoyameshi-search-detail">
+						 <a th:href="@{/searchDetail}" class="link-dark nagoyameshi-card-link">
+                     	 	<button class="btn text-white shadow-sm w-100 nagoyameshi-btn nagoyameshi-detail">詳細検索へ</button>
+                     	 </a>
+                     </div> 
+                 </div>
+                 <div class="container pt-4 pb-5 nagoyameshi-container">
+					 
+                     <div class="row justify-content-center">
+                         <div class="col-xxl-9 col-xl-10 col-lg-11"> 
+                             
+		                     <h2 class="text-center mb-3">店舗一覧</h2>
+		                     <div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">                                        
+		                         <div class="col" th:each="storeInformation : ${storeInformationPage}">
+									 
+		                             <a th:href="@{/searchDetail/__${storeInformation.getStoreId()}__?add=home}" class="link-dark nagoyameshi-card-link">
+		                                 <div class="card h-100">                                                                        
+		                                     
+		                                     <img th:if="${storeInformation.getImageName()}" th:src="@{__${storeInformation.getImageName()}__}" class="card-img-top nagoyameshi-vertical-card-image" alt="店舗画像">                                     
+		                                     <img th:unless="${storeInformation.getImageName()}" th:src="" class="card-img-top snagoyameshi-vertical-card-image" alt="NO IMAGE">                                                                                                                        
+		                                     
+		                                     <div class="card-body">   
+												                                  
+		                                         <h3 class="card-title" th:text="${storeInformation.getStoreName()}"></h3>
+		                                         <p class="card-text mb-1">
+		                                             <small class="text-muted" th:text="${storeInformation.getAddress()}"></small>                                            
+		                                         </p>
+		                                         <p class="card-text">
+		                                             <span th:text="${#numbers.formatInteger(storeInformation.getPriceLowerLimit(), 1, 'COMMA') + '～' + #numbers.formatInteger(storeInformation.getPriceUpperLimit(), 1, 'COMMA') + '円'}"></span>                                            
+		                                         </p>                                  
+		                                     </div>
+		                                     
+		                                 </div>    
+		                             </a>  
+		                                     
+		                         </div>                                               
+		                     </div>
+                              <!-- ページネーション -->                        
+                             <div th:if="${storeInformationPage.getTotalPages() > 1}" class="d-flex justify-content-center">
+                                 <nav aria-label="店舗一覧ページ">
+                                     <ul class="pagination">
+                                         <li class="page-item">
+                                             <span th:if="${storeInformationPage.isFirst()}" class="page-link disabled">前</span>
+                                             <a th:unless="${storeInformationPage.isFirst()}" th:href="@{/storeInformation(page = ${storeInformationPage.getNumber() - 1}, keyword = ${keyword})}" class="page-link nagoyameshi-page-link">前</a>
+                                         </li>
+                                         <li th:each="i : ${#numbers.sequence(0, storeInformationPage.getTotalPages() - 1)}" class="page-item">
+                                             <span th:if="${i == storeInformationPage.getNumber()}" class="page-link active nagoyameshi-active" th:text="${i + 1}"></span>
+                                             <a th:unless="${i == storeInformationPage.getNumber()}" th:href="@{/storeInformation(page = ${i}, keyword = ${keyword})}" class="page-link nagoyameshi-page-link" th:text="${i + 1}"></a>
+                                         </li>
+                                         <li class="page-item">                        
+                                             <span th:if="${storeInformationPage.isLast()}" class="page-link disabled">次</span>
+                                             <a th:unless="${storeInformationPage.isLast()}" th:href="@{/storeInformation(page = ${storeInformationPage.getNumber() + 1}, keyword = ${keyword})}" class="page-link nagoyameshi-page-link">次</a>
+                                         </li>
+                                     </ul>
+                                 </nav> 
+                             </div>                                      
+                         </div>
+                     </div>
+                 </div>              
+             </main>           
+             <!-- フッター -->
+			 <div th:replace="~{fragment :: footer}"></div>
+         </div>         
+         <!-- Bootstrap -->
+         <div th:replace="~{fragment :: scripts}"></div>        
+     </body>
+ </html>

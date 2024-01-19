@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS category (
+     category_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     category_name VARCHAR(50) NOT NULL,  
+     registration_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+ );
+ 
+CREATE TABLE IF NOT EXISTS member_information (
+     member_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     member_name VARCHAR(50) NOT NULL,
+     mailaddress VARCHAR(255) NOT NULL,  
+     password VARCHAR(50) NOT NULL, 
+     age VARCHAR(50) NOT NULL,
+     job VARCHAR(50) NOT NULL,
+     registration_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+ );
+ 
+CREATE TABLE IF NOT EXISTS admin (
+     admin_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     admin_name VARCHAR(50) NOT NULL,  
+     mailaddress VARCHAR(255) NOT NULL,  
+     password VARCHAR(50) NOT NULL, 
+     registration_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+ );
+ 
+ CREATE TABLE IF NOT EXISTS store_information (
+     store_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     category_id INT NOT NULL,
+     store_name VARCHAR(50) NOT NULL,  
+     image_name VARCHAR(255) NOT NULL,       
+     remarks VARCHAR(255) NOT NULL, 
+     price_lower_limit INT NOT NULL, 
+     price_upper_limit INT NOT NULL, 
+     business_hours_open VARCHAR(50) NOT NULL,
+     business_hours_close VARCHAR(50) NOT NULL,
+     postal_code VARCHAR(50) NOT NULL,
+     address VARCHAR(255) NOT NULL,
+     phone_number VARCHAR(50) NOT NULL,
+     regular_holiday VARCHAR(50) NOT NULL,
+     registration_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     FOREIGN KEY(category_id) REFERENCES category(category_id)
+ );
